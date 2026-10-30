@@ -126,7 +126,7 @@ const els = {pegawai:document.getElementById('fPegawai'), atasan:document.getEle
 function uniq(arr){return [...new Set(arr.filter(Boolean))].sort();}
 function fillSelect(el, values){values.forEach(v=>{const o=document.createElement('option'); o.value=v; o.textContent=v; el.appendChild(o);})}
 fillSelect(els.pegawai, uniq(data.map(d=>d['Pegawai'])));
-fillSelect(els.atasan, uniq(data.map(d=>d['Atasan Langsung'])));
+fillSelect(els.atasan, uniq(data.map(d=>d['Atasan Langsung'])).sort((a,b)=>a==='YAN TRIONO'?-1:b==='YAN TRIONO'?1:a.localeCompare(b)));
 fillSelect(els.kelompok, uniq(data.map(d=>d['Kelompok Jabatan'])));
 fillSelect(els.status, uniq(data.map(d=>d['Status Validasi Operasional'])));
 fillSelect(els.prioritas, uniq(data.map(d=>d['Prioritas'])));
@@ -147,7 +147,7 @@ function countBy(rows,key,order=null){
   const c={}; rows.forEach(r=>{const k=r[key]||'(Kosong)'; c[k]=(c[k]||0)+1;});
   let entries = Object.entries(c);
   if(order) entries = order.map(k=>[k,c[k]||0]).filter(x=>x[1]>0 || order.includes(x[0]));
-  else entries.sort((a,b)=>b[1]-a[1]);
+  else entries.sort((a,b)=>key==='Atasan Langsung' && a[0]==='YAN TRIONO'?-1:key==='Atasan Langsung' && b[0]==='YAN TRIONO'?1:b[1]-a[1]);
   return entries;
 }
 function renderBars(containerId, rows, key, colors, order=null){
